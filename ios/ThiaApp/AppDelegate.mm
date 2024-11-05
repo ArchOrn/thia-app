@@ -11,6 +11,10 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  NSString *userAgent = @"Thia mobile app";
+  NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:userAgent, @"UserAgent", nil];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

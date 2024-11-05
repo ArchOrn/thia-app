@@ -10,6 +10,7 @@ const styles = {
 function WebViewScreen(): React.JSX.Element {
   return (
     <WebView
+      userAgent="Thia mobile app"
       source={{ uri: 'https://www.google.com' }}
       style={styles.container}
     />
