@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNetworkAvailable } from '@/core/hooks';
 import WebViewScreen from '@/webview/WebViewScreen.tsx';
 import NoNetworkAvailableScreen from '@/shared/screens/NoNetworkAvailableScreen.tsx';
+import AppTheme from '@/shared/theme/AppTheme.ts';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,7 @@ const RootNavigator = (): React.JSX.Element => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       <Stack.Navigator>
         <Stack.Screen
           name="WebView"
@@ -42,11 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  text: {
-    color: 'black',
-    fontWeight: 'semibold',
-    fontSize: 24,
   },
 });
 
