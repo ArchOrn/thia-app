@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useNetworkAvailable } from '../../core/hooks';
-import WebViewScreen from '../../webview/WebViewScreen.tsx';
-import NoNetworkAvailableScreen from '../screens/NoNetworkAvailableScreen.tsx';
+import { useNetworkAvailable } from '@/core/hooks';
+import WebViewScreen from '@/webview/WebViewScreen.tsx';
+import NoNetworkAvailableScreen from '@/shared/screens/NoNetworkAvailableScreen.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +13,11 @@ const RootNavigator = (): React.JSX.Element => {
   const [isNetworkAvailable, hasCheckedAvailability] = useNetworkAvailable();
 
   if (!hasCheckedAvailability) {
-    return <View>Loading...</View>;
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
   if (!isNetworkAvailable) {

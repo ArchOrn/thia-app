@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RootNavigator from './src/shared/navigation/RootNavigator.tsx';
+import RootNavigator from '@/shared/navigation/RootNavigator.tsx';
 
 function App(): React.JSX.Element {
   return <RootNavigator />;
