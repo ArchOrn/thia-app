@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SplashScreen from 'react-native-splash-screen';
 
 import { useNetworkAvailable } from '@/core/hooks';
 import WebViewScreen from '@/webview/WebViewScreen.tsx';
@@ -30,7 +31,13 @@ const OfflineStack = (): React.JSX.Element => (
 );
 
 const RootNavigator = (): React.JSX.Element => {
-  const [isNetworkAvailable] = useNetworkAvailable();
+  const [isNetworkAvailable, hasCheckedAvailability] = useNetworkAvailable();
+
+  useEffect(() => {
+    if (hasCheckedAvailability) {
+      SplashScreen.hide();
+    }
+  }, [hasCheckedAvailability]);
 
   return (
     <NavigationContainer theme={AppTheme}>
