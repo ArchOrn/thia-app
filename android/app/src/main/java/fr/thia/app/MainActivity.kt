@@ -1,4 +1,4 @@
-package com.thiaapp
+package fr.thia.app
 
 import android.os.Bundle
 import com.facebook.react.ReactActivity

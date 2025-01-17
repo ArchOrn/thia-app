@@ -1,4 +1,4 @@
-package com.thiaapp
+package fr.thia.app
 
 import android.app.Application
 import com.facebook.react.PackageList
