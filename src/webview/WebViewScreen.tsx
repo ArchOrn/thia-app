@@ -4,7 +4,11 @@ import { WebView } from 'react-native-webview';
 import DeviceInfo from 'react-native-device-info';
 import { useTheme } from '@react-navigation/native';
 import remoteConfig from '@react-native-firebase/remote-config';
+
 import semver from 'semver';
+import { Buffer } from 'buffer';
+
+import {WEBSITE_URL, BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD} from '@env';
 
 function WebViewScreen(): React.JSX.Element {
   const [forceUpdate, setForceUpdate] = useState(false);
@@ -88,7 +92,12 @@ const styles = StyleSheet.create({
     <View style={styles.container}>
       <WebView
         userAgent="Thia mobile app"
-        source={{ uri: 'https://www.google.com' }}
+        source={{
+          uri: WEBSITE_URL,
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}`).toString('base64')}`,
+          },
+        }}
         style={styles.webview}
       />
 
