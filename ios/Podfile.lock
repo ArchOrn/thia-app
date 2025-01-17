@@ -1696,6 +1696,30 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSentry (6.5.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Sentry/HybridSDK (= 8.43.0)
+    - Yoga
+  - Sentry/HybridSDK (8.43.0)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1773,6 +1797,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1787,6 +1812,7 @@ SPEC REPOS:
     - FirebaseSharedSwift
     - GoogleUtilities
     - PromisesObjC
+    - Sentry
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1933,6 +1959,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/remote-config"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2018,6 +2046,8 @@ SPEC CHECKSUMS:
   RNFBApp: c5e5aa39e96f825e6e7aa40378f27f3c1aeb2ddf
   RNFBRemoteConfig: 462af45c6edeb8b4347130ced9061293c3258362
   RNScreens: f493b156fe5de2434806b5a2c410800b2cd76c0e
+  RNSentry: 55b6db5ae70ecfe5063bb94d685ee693b8a1ba60
+  Sentry: 532b281a53b1b45a523fd592f608956fb36e577c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 023511aabec491584a8cf06373c0429d5d6aa158
 
