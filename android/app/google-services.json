@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "678214032554",
+    "project_id": "thia-9b20b",
+    "storage_bucket": "thia-9b20b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678214032554:android:65aa36fc5f6915954184d3",
+        "android_client_info": {
+          "package_name": "fr.thia.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtWOcCaO8Rx6J-InLj540aboeBpWCvQWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
