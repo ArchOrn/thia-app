@@ -1,12 +1,11 @@
 version: 2.1
 orbs:
-  node: circleci/node@5
+  node: circleci/node@7.0.0
 commands:
   npm_install:
     steps:
       - node/install-packages:
           pkg-manager: npm
-          working-directory: .
   rn_android_build:
     description: Builds the Android app at the given path with the given build types. This should be run only after installing dependencies.
     parameters:
@@ -29,21 +28,30 @@ jobs:
           root: .
   android_build:
     executor: linux_android
+    parameters:
+      build_type:
+        default: debug
+        description: The build type to build. This is normally either "debug" or "release" but you may have custom build types configured for your app.
+        type: string
     steps:
       - attach_workspace:
           at: .
       - npm_install
       - rn_android_build:
-          parameters:
-            build_type:
-              default: debug
-              description: The build type to build. This is normally either "debug" or "release" but you may have custom build types configured for your app.
-              type: string
           build_type: <<parameters.build_type>>
       - store_artifacts:
           path: android/app/build/outputs/apk
   ios_build:
     executor: macos
+    parameters:
+      project_path:
+        type: string
+      scheme:
+        type: string
+      device:
+        type: string
+      build_configuration:
+        type: string
     steps:
       - attach_workspace:
           at: .
@@ -55,7 +63,7 @@ jobs:
           command: |
             xcodebuild -workspace <<parameters.project_path>> -scheme <<parameters.scheme>> -destination 'platform=iOS Simulator,name=<<parameters.device>>' -configuration <<parameters.build_configuration>> build
       - store_artifacts:
-          path:
+          path: ios/build/Release-iphonesimulator
 executors:
   linux_android:
     parameters:
@@ -76,8 +84,6 @@ executors:
     environment:
       GRADLE_OPTS: <<parameters.gradle_options>>
     resource_class: <<parameters.resource_class>>
-    machine:
-      image: ubuntu-2404
   macos:
     parameters:
       resource_class:
@@ -91,8 +97,6 @@ executors:
     macos:
       xcode: <<parameters.xcode_version>>
     resource_class: <<parameters.resource_class>>
-    machine:
-      image: xcode:<<parameters.xcode_version>>
 workflows:
   android:
     jobs:
@@ -104,7 +108,7 @@ workflows:
   ios:
     jobs:
       - checkout_code
-      - react-native/ios_build:
+      - ios_build:
           build_configuration: Release
           device: iPhone 11
           name: build_ios_release
