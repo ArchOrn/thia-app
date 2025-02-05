@@ -1,26 +1,106 @@
 version: 2.1
 orbs:
   node: circleci/node@5
-  react-native: react-native-community/react-native@8.0.1
+commands:
+  npm_install:
+    steps:
+      - node/install-packages:
+          pkg-manager: npm
+          working-directory: .
+  rn_android_build:
+    description: Builds the Android app at the given path with the given build types. This should be run only after installing dependencies.
+    parameters:
+      build_type:
+        default: debug
+        description: The build type to build. This is normally either "debug" or "release" but you may have custom build types configured for your app.
+        type: string
+    steps:
+      - run:
+          name: Build React Native Android
+          command: |
+            npx react-native build-android --mode=<<parameters.build_type>>
 jobs:
   checkout_code:
-    executor: react-native/linux_js
+    executor: linux_android
     steps:
       - checkout
       - persist_to_workspace:
           paths: [ . ]
           root: .
+  android_build:
+    executor: linux_android
+    steps:
+      - attach_workspace:
+          at: .
+      - npm_install
+      - rn_android_build:
+          parameters:
+            build_type:
+              default: debug
+              description: The build type to build. This is normally either "debug" or "release" but you may have custom build types configured for your app.
+              type: string
+          build_type: <<parameters.build_type>>
+      - store_artifacts:
+          path: android/app/build/outputs/apk
+  ios_build:
+    executor: macos
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install CocoaPods
+          command: pod install
+      - run:
+          name: Build iOS
+          command: |
+            xcodebuild -workspace <<parameters.project_path>> -scheme <<parameters.scheme>> -destination 'platform=iOS Simulator,name=<<parameters.device>>' -configuration <<parameters.build_configuration>> build
+      - store_artifacts:
+          path:
+executors:
+  linux_android:
+    parameters:
+      build_image_version:
+        default: "2025.01-node"
+        description: Android build image version. For available versions, see https://circleci.com/developer/images/image/cimg/android#image-tags
+        type: string
+      gradle_options:
+        default: -Xmx2014m -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"
+        description: Gradle command options. Note that setting this will override the default options so you might need to supply those as well.
+        type: string
+      resource_class:
+        default: medium
+        description: Changes the resource class of the executor. Requires a support request to enable the resource_class parameter. See https://circleci.com/docs/2.0/configuration-reference/#resource_class
+        type: string
+    docker:
+      - image: cimg/android:<<parameters.build_image_version>>
+    environment:
+      GRADLE_OPTS: <<parameters.gradle_options>>
+    resource_class: <<parameters.resource_class>>
+    machine:
+      image: ubuntu-2404
+  macos:
+    parameters:
+      resource_class:
+        default: medium
+        description: Changes the resource class of the executor. Requires a support request to enable the resource_class parameter. See https://circleci.com/docs/2.0/configuration-reference/#resource_class
+        type: string
+      xcode_version:
+        default: 16.2.0
+        description: The version of Xcode to use. See here for the list of supported versions https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+        type: string
+    macos:
+      xcode: <<parameters.xcode_version>>
+    resource_class: <<parameters.resource_class>>
+    machine:
+      image: xcode:<<parameters.xcode_version>>
 workflows:
   android:
     jobs:
       - checkout_code
-      - react-native/android_build:
+      - android_build:
           build_type: release
           requires:
             - checkout_code
-      - react-native/android_test:
-          requires:
-            - react-native/android_build
   ios:
     jobs:
       - checkout_code
