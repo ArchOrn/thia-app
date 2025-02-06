@@ -63,6 +63,7 @@ jobs:
         type: string
       build_configuration:
         type: string
+    working_directory: ios
     steps:
       - attach_workspace:
           at: .
