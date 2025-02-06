@@ -6,6 +6,16 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: npm
+  install_requirements:
+    steps:
+      - run:
+          name: Install Ninja
+          command: |
+            sudo apt-get update && sudo apt-get install -y ninja-build
+      - run:
+          name: Set CMake and Ninja Paths
+          command: |
+            export PATH=$HOME/ninja:$PATH
   rn_android_build:
     description: Builds the Android app at the given path with the given build types. This should be run only after installing dependencies.
     parameters:
@@ -37,6 +47,7 @@ jobs:
       - attach_workspace:
           at: .
       - npm_install
+      - install_requirements
       - rn_android_build:
           build_type: <<parameters.build_type>>
       - store_artifacts:
