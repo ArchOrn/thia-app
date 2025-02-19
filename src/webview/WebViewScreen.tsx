@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler, Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import DeviceInfo from 'react-native-device-info';
 import { useTheme } from '@react-navigation/native';
@@ -13,6 +13,9 @@ import {WEBSITE_URL, BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD} from '@env';
 function WebViewScreen(): React.JSX.Element {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [updateUrl, setUpdateUrl] = useState('');
+  const [canGoBack, setCanGoBack] = useState(false);
+
+  const webViewRef = useRef(null);
 
   useEffect(() => {
     const checkForUpdate = async () => {
@@ -41,6 +44,24 @@ function WebViewScreen(): React.JSX.Element {
 
     checkForUpdate();
   }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (canGoBack && webViewRef.current) {
+        webViewRef.current.goBack();
+        return true;
+      }
+
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [canGoBack]);
 
 const { colors } = useTheme();
 
@@ -91,6 +112,7 @@ const styles = StyleSheet.create({
   return (
     <View style={styles.container}>
       <WebView
+        ref={webViewRef}
         userAgent="Thia mobile app"
         source={{
           uri: WEBSITE_URL,
@@ -99,6 +121,7 @@ const styles = StyleSheet.create({
           },
         }}
         style={styles.webview}
+        onNavigationStateChange={(navState) => setCanGoBack(navState.canGoBack)}
       />
 
       <Modal
