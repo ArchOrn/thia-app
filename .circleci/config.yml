@@ -45,6 +45,18 @@ commands:
           name: Build React Native Android
           command: |
             npx react-native build-android --mode=<<parameters.build_type>>
+  rn_ios_build:
+    description: Builds the Android app at the given path with the given build types. This should be run only after installing dependencies.
+    parameters:
+      build_type:
+        default: Debug
+        description: The build type to build. This is normally either "Debug" or "Release" but you may have custom build types configured for your app.
+        type: string
+    steps:
+      - run:
+          name: Build React Native iOS
+          command: |
+            npx react-native run-ios --mode <<parameters.build_type>>
 jobs:
   checkout_code:
     executor: linux_android
@@ -104,12 +116,8 @@ jobs:
       - run:
           name: Install CocoaPods
           command: pod install
-      - run:
-          name: Build iOS
-          command: |
-            xcodebuild -workspace <<parameters.project_path>> -scheme <<parameters.scheme>> -destination 'platform=iOS Simulator,name=<<parameters.device>>' -configuration <<parameters.build_configuration>> build
-      - store_artifacts:
-          path: ios/build/Release-iphonesimulator
+      - rn_ios_build:
+          build_type: <<parameters.build_configuration>>
 executors:
   linux_android:
     parameters:
