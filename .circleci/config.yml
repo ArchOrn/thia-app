@@ -21,6 +21,7 @@ commands:
       - run:
           name: Create secret files not committed to the repository
           command: |
+            mkdir -p android/app
             echo "$KEY_PROPERTIES_BASE64" | base64 --decode > android/key.properties
             echo "$SENTRY_PROPERTIES_BASE64" | base64 --decode > android/sentry.properties
             echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > android/app/upload.keystore
@@ -50,22 +51,25 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          paths: [ . ]
           root: .
+          paths: [ . ]
   android_setup:
     executor: linux_android
     steps:
       - setup_android_secrets
       - persist_to_workspace:
-          paths: [ . ]
           root: .
+          paths:
+            - android/key.properties
+            - android/sentry.properties
+            - android/app/upload.keystore
   android_cleanup:
     executor: linux_android
     steps:
       - clean_android_secrets
       - persist_to_workspace:
-          paths: [ . ]
           root: .
+          paths: [ . ]
   android_build:
     executor: linux_android
     parameters:
