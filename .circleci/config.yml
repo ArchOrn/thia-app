@@ -169,4 +169,4 @@ workflows:
           scheme: ThiaApp
       - cleanup:
           requires:
-            - android_build
+            - ios_build
