@@ -16,6 +16,22 @@ commands:
           name: Set CMake and Ninja Paths
           command: |
             export PATH=$HOME/ninja:$PATH
+  setup_secrets:
+    steps:
+      - run:
+          name: Create secret files not committed to the repository
+          command: |
+            echo "$KEY_PROPERTIES_BASE64" | base64 --decode > android/key.properties
+            echo "$SENTRY_PROPERTIES_BASE64" | base64 --decode > android/sentry.properties
+            echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > android/app/upload.keystore
+  clean_secrets:
+    steps:
+      - run:
+          name: Clean secret files
+          command: |
+            rm android/key.properties
+            rm android/sentry.properties
+            rm android/app/upload.keystore
   rn_android_build:
     description: Builds the Android app at the given path with the given build types. This should be run only after installing dependencies.
     parameters:
@@ -33,6 +49,20 @@ jobs:
     executor: linux_android
     steps:
       - checkout
+      - persist_to_workspace:
+          paths: [ . ]
+          root: .
+  setup:
+    executor: linux_android
+    steps:
+      - setup_secrets
+      - persist_to_workspace:
+          paths: [ . ]
+          root: .
+  cleanup:
+    executor: linux_android
+    steps:
+      - clean_secrets
       - persist_to_workspace:
           paths: [ . ]
           root: .
@@ -113,13 +143,16 @@ workflows:
   android:
     jobs:
       - checkout_code
+      - setup
       - android_build:
           build_type: release
           requires:
             - checkout_code
+      - cleanup
   ios:
     jobs:
       - checkout_code
+      - setup
       - ios_build:
           build_configuration: Release
           device: iPhone 11
@@ -128,3 +161,4 @@ workflows:
           requires:
             - checkout_code
           scheme: ThiaApp
+      - cleanup
