@@ -143,22 +143,30 @@ workflows:
   android:
     jobs:
       - checkout_code
-      - setup
+      - setup:
+          requires:
+            - checkout_code
       - android_build:
           build_type: release
           requires:
-            - checkout_code
-      - cleanup
+            - setup
+      - cleanup:
+          requires:
+            - android_build
   ios:
     jobs:
       - checkout_code
-      - setup
+      - setup:
+          requires:
+            - checkout_code
       - ios_build:
           build_configuration: Release
           device: iPhone 11
           name: build_ios_release
           project_path: ios/ThiaApp.xcodeproj
           requires:
-            - checkout_code
+            - setup
           scheme: ThiaApp
-      - cleanup
+      - cleanup:
+          requires:
+            - android_build
