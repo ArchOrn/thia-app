@@ -63,51 +63,51 @@ function WebViewScreen(): React.JSX.Element {
     return () => backHandler.remove();
   }, [canGoBack]);
 
-const { colors } = useTheme();
+  const { colors } = useTheme();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  webview: {
-    flex: 1,
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContent: {
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    elevation: 5,
-    padding: 20,
-    width: '80%',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  modalMessage: {
-    fontSize: 16,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  updateButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  updateButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    webview: {
+      flex: 1,
+    },
+    modalContainer: {
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      flex: 1,
+      justifyContent: 'center',
+    },
+    modalContent: {
+      alignItems: 'center',
+      backgroundColor: '#ffffff',
+      borderRadius: 10,
+      elevation: 5,
+      padding: 20,
+      width: '80%',
+    },
+    modalTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    modalMessage: {
+      fontSize: 16,
+      marginBottom: 20,
+      textAlign: 'center',
+    },
+    updateButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 5,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    updateButtonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+  });
 
   return (
     <View style={styles.container}>
