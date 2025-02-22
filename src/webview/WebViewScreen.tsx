@@ -63,6 +63,16 @@ function WebViewScreen(): React.JSX.Element {
     return () => backHandler.remove();
   }, [canGoBack]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (webViewRef.current) {
+        webViewRef.current.reload();
+      }
+    }, 600000); // 10 minutes
+
+    return () => clearInterval(interval);
+  }, []);
+
   const { colors } = useTheme();
 
   const styles = StyleSheet.create({
