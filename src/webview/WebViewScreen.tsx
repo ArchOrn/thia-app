@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BackHandler, Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Linking, Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import DeviceInfo from 'react-native-device-info';
 import { useTheme } from '@react-navigation/native';
@@ -14,8 +14,19 @@ function WebViewScreen(): React.JSX.Element {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [updateUrl, setUpdateUrl] = useState('');
   const [canGoBack, setCanGoBack] = useState(false);
+  const [userAgent, setUserAgent] = useState(null);
 
   const webViewRef = useRef(null);
+
+  useEffect(() => {
+    (async function getDeviceInfo() {
+      console.log('Getting device info...');
+      const appVersion = await DeviceInfo.getVersion();
+      const osName = await DeviceInfo.getSystemName();
+      const osVersion = await DeviceInfo.getSystemVersion();
+      setUserAgent(`react-native/${appVersion}/${osName}/${osVersion}`);
+    })();
+  }, []);
 
   useEffect(() => {
     const checkForUpdate = async () => {
@@ -121,18 +132,22 @@ function WebViewScreen(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      <WebView
-        ref={webViewRef}
-        userAgent="Thia mobile app"
-        source={{
-          uri: WEBSITE_URL,
-          headers: {
-            Authorization: `Basic ${Buffer.from(`${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}`).toString('base64')}`,
-          },
-        }}
-        style={styles.webview}
-        onNavigationStateChange={(navState) => setCanGoBack(navState.canGoBack)}
-      />
+      {userAgent ? (
+        <WebView
+          ref={webViewRef}
+          userAgent={userAgent}
+          source={{
+            uri: WEBSITE_URL,
+            headers: {
+              Authorization: `Basic ${Buffer.from(`${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}`).toString('base64')}`,
+            },
+          }}
+          style={styles.webview}
+          onNavigationStateChange={(navState) => setCanGoBack(navState.canGoBack)}
+        />
+      ) : (
+        <ActivityIndicator size="large" color={colors.primary} style={{ flex: 1 }} />
+      )}
 
       <Modal
         visible={forceUpdate}
