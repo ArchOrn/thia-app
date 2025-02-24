@@ -86,6 +86,7 @@
 		5B7EB9410499542E8C5724F5 /* Pods-ThiaApp-ThiaAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThiaApp-ThiaAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ThiaApp-ThiaAppTests/Pods-ThiaApp-ThiaAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C1997040CE9476EBCC3ECFD /* Inter-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-BoldItalic.ttf"; path = "../assets/fonts/Inter-BoldItalic.ttf"; sourceTree = "<group>"; };
 		62F266E423CF40E1BAAEA0B0 /* Krub-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Krub-Light.ttf"; path = "../assets/fonts/Krub-Light.ttf"; sourceTree = "<group>"; };
+		646F35792D6C7E5D001D3C0F /* ThiaApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ThiaApp.entitlements; path = ThiaApp/ThiaApp.entitlements; sourceTree = "<group>"; };
 		64CD38002D3A69B8004D7018 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		703506DBC0C943A7970660D1 /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		71847BA28BBA45878477521B /* Inter-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraBoldItalic.ttf"; path = "../assets/fonts/Inter-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		13B07FAE1A68108700A75B9A /* ThiaApp */ = {
 			isa = PBXGroup;
 			children = (
+				646F35792D6C7E5D001D3C0F /* ThiaApp.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -630,6 +632,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ThiaApp/ThiaApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5538GBGW7Y;
 				ENABLE_BITCODE = NO;
@@ -661,6 +664,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ThiaApp/ThiaApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5538GBGW7Y;
 				INFOPLIST_FILE = ThiaApp/Info.plist;
