@@ -5,6 +5,7 @@ const AppTheme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#1bb4da',
+    dark: '#080e32',
   },
 };
 
