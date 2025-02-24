@@ -8,6 +8,8 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import semver from 'semver';
 import { Buffer } from 'buffer';
 
+import ServerErrorScreen from '@/shared/screens/ServerErrorScreen.tsx';
+
 import {WEBSITE_URL, BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD} from '@env';
 
 function WebViewScreen(): React.JSX.Element {
@@ -15,6 +17,7 @@ function WebViewScreen(): React.JSX.Element {
   const [updateUrl, setUpdateUrl] = useState('');
   const [canGoBack, setCanGoBack] = useState(false);
   const [userAgent, setUserAgent] = useState(null);
+  const [serverError, setServerError] = useState(false);
 
   const webViewRef = useRef(null);
 
@@ -132,19 +135,29 @@ function WebViewScreen(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      {userAgent ? (
-        <WebView
-          ref={webViewRef}
-          userAgent={userAgent}
-          source={{
-            uri: WEBSITE_URL,
-            headers: {
-              Authorization: `Basic ${Buffer.from(`${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}`).toString('base64')}`,
-            },
-          }}
-          style={styles.webview}
-          onNavigationStateChange={(navState) => setCanGoBack(navState.canGoBack)}
-        />
+      {userAgent ?
+        (!serverError ? (
+          <WebView
+            ref={webViewRef}
+            userAgent={userAgent}
+            source={{
+              uri: WEBSITE_URL,
+              headers: {
+                Authorization: `Basic ${Buffer.from(`${BASIC_AUTH_USERNAME}:${BASIC_AUTH_PASSWORD}`).toString('base64')}`,
+              },
+            }}
+            style={styles.webview}
+            onNavigationStateChange={(navState) => setCanGoBack(navState.canGoBack)}
+            onHttpError={(syntheticEvent) => {
+              const { statusCode } = syntheticEvent.nativeEvent;
+              if (statusCode >= 500) {
+                setServerError(true);
+              }
+            }}
+          />
+        ) : (
+          <ServerErrorScreen />
+        )
       ) : (
         <ActivityIndicator size="large" color={colors.primary} style={{ flex: 1 }} />
       )}
